@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head><title>Confirm Purchase</title></head>
+<body>
+<h1>Confirm Purchase</h1>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for msg in messages %}
+      <p style="color:green;">{{ msg }}</p>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<p>Flight {{ flight.flight_number }} — {{ flight.depart_airport_code }} → {{ flight.arrival_airport_code }}</p>
+<p>Seats Sold: {{ sold }}{% if seats_total %} / {{ seats_total }}{% endif %}</p>
+
+<form method="POST">
+    <label>Qty: <input type="number" name="qty" value="1" min="1"></label><br>
+    <label>Card Type:
+        <select name="card_type">
+            <option value="Credit">Credit</option>
+            <option value="Debit">Debit</option>
+        </select>
+    </label><br>
+    <label>Card Number: <input name="card_number"></label><br>
+    <label>Name on Card: <input name="name_on_card" value="{{ session.name }}"></label><br>
+    <label>Expiration Date: <input type="month" name="expiration_date"></label><br>
+    <button type="submit">Purchase</button>
+</form>
+
+<a href="{{ url_for('public_search') }}">Back to Search</a>
+</body>
+</html>

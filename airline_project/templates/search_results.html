@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head><title>Search Flights</title></head>
+<body>
+    <h1>Search for Flights</h1>
+
+    <!-- Change method to GET and input names to match Flask route -->
+    <form method="GET" action="{{ url_for('public_search') }}">
+    Trip Type:
+    <select name="trip_type" id="trip_type" onchange="toggleReturnDate()">
+        <option value="oneway">One Way</option>
+        <option value="roundtrip">Round Trip</option>
+    </select>
+    <br>
+
+    From (City or Airport): <input name="src"><br>
+    To (City or Airport): <input name="dst"><br>
+
+    Departure Date: <input type="date" name="depart_date"><br>
+
+    <div id="return_date_section" style="display:none;">
+        Return Date: <input type="date" name="return_date"><br>
+    </div>
+
+    <button type="submit">Search</button>
+</form>
+
+<script>
+function toggleReturnDate() {
+    const tripType = document.getElementById("trip_type").value;
+    document.getElementById("return_date_section").style.display =
+        tripType === "roundtrip" ? "block" : "none";
+}
+</script>
+
+
+{% if outgoing %}
+    <h2>Departure Flights</h2>
+    <ul>
+    {% for f in outgoing %}
+        <li>
+    {{ f.flight_number }}:
+    {{ f.depart_airport_code }} → {{ f.arrival_airport_code }}
+    — Price: ${{ f.base_price }}
+
+    <a href="{{ url_for('purchase', flight_number=f.flight_number) }}">Purchase</a>
+</li>
+
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if trip_type == "roundtrip" and returns %}
+    <h2>Return Flights</h2>
+    <ul>
+    {% for f in returns %}
+        <li>
+    {{ f.flight_number }}:
+    {{ f.depart_airport_code }} → {{ f.arrival_airport_code }}
+    — Price: ${{ f.base_price }}
+
+    <a href="{{ url_for('purchase', flight_number=f.flight_number) }}">Purchase</a>
+</li>
+
+    {% endfor %}
+    </ul>
+{% endif %}
+
+    {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for msg in messages %}
+      <p style="color:green;">{{ msg }}</p>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+</body>
+</html>

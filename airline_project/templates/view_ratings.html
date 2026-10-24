@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ratings for Flight {{ flight_number }}</title>
+</head>
+<body>
+    <h1>Ratings for Flight {{ flight_number }}</h1>
+
+    {% if avg %}
+        <p><strong>Average Rating:</strong> {{ "%.2f"|format(avg) }}/5</p>
+    {% else %}
+        <p>No ratings yet for this flight.</p>
+    {% endif %}
+
+    {% if ratings %}
+        <table border="1" cellpadding="5">
+            <tr>
+                <th>Customer Email</th>
+                <th>Name</th>
+                <th>Rating</th>
+                <th>Comment</th>
+                <th>Submitted At</th>
+            </tr>
+            {% for r in ratings %}
+            <tr>
+                <td>{{ r.customer_email }}</td>
+                <td>{{ r.name }}</td>
+                <td>{{ r.rating }}</td>
+                <td>{{ r.comment }}</td>
+                <td>{{ r.created_at }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+    <a href="{{ url_for('staff_home') }}">Back to Staff Home</a>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for msg in messages %}
+          <p style="color:red;">{{ msg }}</p>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rate Your Flights</title>
+</head>
+<body>
+    <h1>Rate Your Past Flights</h1>
+
+    {% if not past_flights %}
+        <p>You have no flights eligible for rating.</p>
+    {% else %}
+        {% for flight in past_flights %}
+            <div style="border:1px solid #ccc; padding:10px; margin:10px 0;">
+                <p>
+                    Flight {{ flight.flight_number }}: 
+                    {{ flight.depart_airport_code }} → {{ flight.arrival_airport_code }}<br>
+                    Departed: {{ flight.departure_datetime }} | Arrived: {{ flight.arrival_datetime }}
+                </p>
+
+                <form method="POST">
+                    <input type="hidden" name="flight_number" value="{{ flight.flight_number }}">
+                    Rating (1–5): <input type="number" name="rating" min="1" max="5" required><br>
+                    Comment:<br>
+                    <textarea name="comment"></textarea><br>
+                    <button type="submit">Submit Rating</button>
+                </form>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+            {% for msg in messages %}
+                <li style="color:green;">{{ msg }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+</body>
+</html>

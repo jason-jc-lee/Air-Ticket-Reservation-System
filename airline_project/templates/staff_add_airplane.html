@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Airplane</title>
+</head>
+<body>
+<h1>Airline Staff - Add Airplane</h1>
+<h2>Welcome, {{ username }}!</h2>
+
+<h2>Add New Airplane</h2>
+<form method="POST" action="{{ url_for('staff_add_airplane') }}">
+    Airplane ID: <input type="text" name="airplane_id" required><br>
+    Number of Seats: <input type="number" name="num_of_seats" required><br>
+    Manufacturer: <input type="text" name="manufacturer" required><br>
+    Age (years): <input type="number" name="age" required><br>
+    <button type="submit">Add Airplane</button>
+</form>
+
+<h2>Your Airline's Airplanes</h2>
+{% if airplanes %}
+<table border="1" cellpadding="5">
+    <tr>
+        <th>ID</th>
+        <th>Seats</th>
+        <th>Manufacturer</th>
+        <th>Age</th>
+    </tr>
+    {% for a in airplanes %}
+    <tr>
+        <td>{{ a.airplane_id }}</td>
+        <td>{{ a.num_of_seats }}</td>
+        <td>{{ a.manufacturer }}</td>
+        <td>{{ a.age }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No airplanes found for your airline.</p>
+{% endif %}
+
+<a href="{{ url_for('staff_home') }}">Back to Staff Home</a>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for msg in messages %}
+      <p style="color:red;">{{ msg }}</p>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+</body>
+</html>

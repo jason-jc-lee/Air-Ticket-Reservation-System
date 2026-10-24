@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customers for Flight {{ flight_number }}</title>
+    <style>
+        table { border-collapse: collapse; width: 80%; margin-bottom: 20px; }
+        th, td { border: 1px solid #333; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        h1, h2 { margin-bottom: 10px; }
+        a { text-decoration: none; color: blue; }
+    </style>
+</head>
+<body>
+    <h1>Customers for Flight {{ flight_number }}</h1>
+
+    {% if customers %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Name</th>
+                    <th>Tickets Purchased</th>
+                    <th>Purchase Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in customers %}
+                <tr>
+                    <td>{{ c.customer_email }}</td>
+                    <td>{{ c.name }}</td>
+                    <td>{{ c.qty }}</td>
+                    <td>{{ c.purchase_datetime }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No customers have purchased tickets for this flight yet.</p>
+    {% endif %}
+
+    <a href="{{ url_for('staff_home') }}">Back to Flights</a>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for msg in messages %}
+          <p style="color:red;">{{ msg }}</p>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+</body>
+</html>

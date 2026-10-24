@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Staff Home</title>
+</head>
+<body>
+<h1>Airline Staff Home</h1>
+<h1>Welcome, {{ username }}!</h1>
+
+<h2>Filter Flights</h2>
+<form method="GET" action="{{ url_for('staff_home') }}">
+    From (City or Airport):
+    <input type="text" name="src" value="{{ request_args.get('src','') }}">
+    To (City or Airport):
+    <input type="text" name="dst" value="{{ request_args.get('dst','') }}">
+    Start Date:
+    <input type="date" name="start_date" value="{{ request_args.get('start_date','') }}">
+    End Date:
+    <input type="date" name="end_date" value="{{ request_args.get('end_date','') }}">
+
+    <button type="submit">Filter</button>
+</form>
+
+<h2>Upcoming Flights</h2>
+{% if upcoming_flights %}
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Flight #</th>
+        <th>Depart</th>
+        <th>Arrival</th>
+        <th>Source</th>
+        <th>Destination</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+    {% for f in upcoming_flights %}
+    <tr>
+        <td>{{ f.flight_number }}</td>
+        <td>{{ f.departure_datetime }}</td>
+        <td>{{ f.arrival_datetime }}</td>
+        <td>{{ f.depart_airport_code }}</td>
+        <td>{{ f.arrival_airport_code }}</td>
+        <td>{{ f.status }}</td>
+        <td>
+            <a href="{{ url_for('staff_change_status', flight_number=f.flight_number) }}">Change Status</a> |
+            <a href="{{ url_for('staff_view_ratings', flight_number=f.flight_number) }}">View Ratings</a> |
+            <a href="{{ url_for('staff_view_customers', flight_number=f.flight_number) }}">View Customers</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No upcoming flights.</p>
+{% endif %}
+
+<h2>Past Flights</h2>
+{% if past_flights %}
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Flight #</th>
+        <th>Depart</th>
+        <th>Arrival</th>
+        <th>Source</th>
+        <th>Destination</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+    {% for f in past_flights %}
+    <tr>
+        <td>{{ f.flight_number }}</td>
+        <td>{{ f.departure_datetime }}</td>
+        <td>{{ f.arrival_datetime }}</td>
+        <td>{{ f.depart_airport_code }}</td>
+        <td>{{ f.arrival_airport_code }}</td>
+        <td>{{ f.status }}</td>
+        <td>
+            <a href="{{ url_for('staff_view_ratings', flight_number=f.flight_number) }}">View Ratings</a> |
+            <a href="{{ url_for('staff_view_customers', flight_number=f.flight_number) }}">View Customers</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No past flights.</p>
+{% endif %}
+<h2>Create New Flight</h2>
+<form method="POST" action="{{ url_for('staff_home') }}">
+    Flight Number: <input type="text" name="flight_number" required><br>
+    Departure Airport: <input type="text" name="depart_code" required><br>
+    Arrival Airport: <input type="text" name="arrival_code" required><br>
+    Departure DateTime: <input type="datetime-local" name="depart_datetime" required><br>
+    Arrival DateTime: <input type="datetime-local" name="arrival_datetime" required><br>
+    Base Price: <input type="number" step="0.01" name="base_price" required><br>
+   Airplane ID (optional):
+<select name="airplane_id">
+  <option value="">--No Airplane--</option>
+  {% for a in airplanes %}
+    <option value="{{ a.airplane_id }}">
+      ID {{ a.airplane_id }} | {{ a.manufacturer }} | {{ a.num_of_seats }} seats | {{ a.age }} years
+    </option>
+  {% endfor %}
+</select>
+<br>
+    <button type="submit">Create Flight</button>
+</form>
+
+
+<a href="{{ url_for('staff_reports') }}">View Ticket Sales Reports</a><br>
+<a href="{{ url_for('staff_add_airplane') }}">Add Airplane</a><br>
+<a href="{{ url_for('logout') }}">Logout</a>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for msg in messages %}
+      <p style="color:red;">{{ msg }}</p>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <a href="{{ url_for('index') }}">Home</a>
+<head><title>Register Staff</title></head>
+<body>
+    <h1>Register Airline Staff</h1>
+
+   <form method="POST">
+    <input type="hidden" name="role" value="staff">
+    
+    Username: <input name="username"><br>
+    First Name: <input name="first_name"><br>
+    Last Name: <input name="last_name"><br>
+    Email: <input name="email"><br>
+    Password: <input type="password" name="password"><br>
+
+    Airline:
+    <select name="airline_name">
+        {% for airline in airlines %}
+            <option>{{ airline['name'] }}</option>
+        {% endfor %}
+    </select>
+    <br>
+
+    <button type="submit">Register</button>
+</form>
+
+<h3>Already Have An Account?</h3>
+<a href="{{ url_for('login') }}?role=staff">Staff Login</a><br>
+
+   {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for msg in messages %}
+      <p style="color:red;">{{ msg }}</p>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head><title>Customer Home</title></head>
+<body>
+    <h1>Welcome, {{ session.name }}</h1>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for msg in messages %}
+          <p style="color:red;">{{ msg }}</p>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <h2>My Upcoming Flights</h2>
+    {% if upcoming %}
+        <table border="1" cellpadding="5">
+            <tr>
+                <th>Flight Number</th>
+                <th>Departure</th>
+                <th>Arrival</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            {% for f in upcoming %}
+            <tr>
+                <td>{{ f.flight_number }}</td>
+                <td>{{ f.departure_datetime }}</td>
+                <td>{{ f.arrival_datetime }}</td>
+                <td>{{ f.status }}</td>
+                <td><a href="{{ url_for('purchase', flight_number=f.flight_number) }}">View / Purchase Tickets</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No upcoming flights found.</p>
+    {% endif %}
+
+    <h2>My Previous Flights</h2>
+{% if past %}
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>Flight Number</th>
+            <th>Departure</th>
+            <th>Arrival</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        {% for f in past %}
+        <tr>
+            <td>{{ f.flight_number }}</td>
+            <td>{{ f.departure_datetime }}</td>
+            <td>{{ f.arrival_datetime }}</td>
+            <td>{{ f.status }}</td>
+            <td><a href="{{ url_for('rate') }}">Rate / Comment</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>No previous flights found.</p>
+{% endif %}
+
+
+    <br>
+    <a href="{{ url_for('public_search') }}">Search Flights</a><br>
+    <a href="{{ url_for('logout') }}">Logout</a>
+
+</body>
+</html>

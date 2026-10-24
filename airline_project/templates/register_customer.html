@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <a href="{{ url_for('index') }}">Home</a>
+<head><title>Register Customer</title></head>
+<body>
+    <h1>Register Customer</h1>
+
+    <form method="POST">
+        Email: <input name="email"><br>
+        Name: <input name="name"><br>
+        Password: <input type="password" name="password"><br>
+        Date of Birth: <input type="date" name="date_of_birth"><br>
+        Phone: <input name="phone_number"><br>
+        <button type="submit">Register</button>
+    </form>
+<h3>Already Have An Account?</h3>
+<a href="{{ url_for('login') }}?role=customer">Customer Login</a><br>
+   {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for msg in messages %}
+      <p style="color:red;">{{ msg }}</p>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ticket Sales Reports</title>
+</head>
+<body>
+<h1>Ticket Sales Reports</h1>
+<h2>Welcome, {{ username }}!</h2>
+
+<h2>Reports</h2>
+<h3>Note: Start Date and End Date is always set at 12 AM EST.</h3>
+<div style="margin-bottom: 15px;">
+
+    <a href="/staff_reports?range=last_month">
+        <button>Last 30 Days</button>
+    </a>
+
+    <a href="/staff_reports?range=last_year">
+        <button>Last Year</button>
+    </a>
+
+    <a href="/staff_reports?range=this_year">
+        <button>This Year</button>
+    </a>
+
+    <a href="/staff_reports">
+        <button>Reset</button>
+    </a>
+
+</div>
+
+
+<h3>Filter Date Range</h3>
+<form method="get" action="/staff_reports">
+    <label>Start Date:</label>
+    <input type="date" name="start_date" value="{{ start_date }}">
+    
+    <label>End Date:</label>
+    <input type="date" name="end_date" value="{{ end_date }}">
+
+    <button type="submit">Apply</button>
+</form>
+
+
+<h3>Total Tickets & Amount</h3>
+<p>Total Tickets Sold: {{ totals.total_tickets or 0 }}</p>
+<p>Total Amount: ${{ totals.total_amount or 0 }}</p>
+
+<h3>Month-wise Tickets Sold (Table)</h3>
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Month</th>
+        <th>Tickets Sold</th>
+        <th>Total Amount</th>
+    </tr>
+    {% for row in monthly_data %}
+    <tr>
+        <td>{{ row.month }}</td>
+        <td>{{ row.tickets_sold }}</td>
+        <td>${{ row.total_amount }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<a href="{{ url_for('staff_home') }}">Back to Staff Home</a>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for msg in messages %}
+      <p style="color:red;">{{ msg }}</p>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+</body>
+</html>

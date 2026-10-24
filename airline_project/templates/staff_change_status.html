@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Change Flight Status</title>
+</head>
+<body>
+<h1>Change Status for Flight {{ flight.flight_number }}</h1>
+
+<form method="POST">
+    Current Status: {{ flight.status }}<br><br>
+    
+    New Status:
+    <select name="status" required>
+        <option value="On Time" {% if flight.status=="On Time" %}selected{% endif %}>On Time</option>
+        <option value="Delayed" {% if flight.status=="Delayed" %}selected{% endif %}>Delayed</option>
+    </select><br><br>
+
+    <button type="submit">Update Status</button>
+</form>
+
+<a href="{{ url_for('staff_home') }}">Back to Home</a>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for msg in messages %}
+      <p style="color:red;">{{ msg }}</p>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+</body>
+</html>

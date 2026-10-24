@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Airline System</title>
+</head>
+<body>
+    <h1>Welcome to the Airline Reservation System</h1>
+
+<h3>Public Search</h3>
+<a href="{{ url_for('public_search') }}">Search Flights</a>
+
+<h3>Register</h3>
+<a href="{{ url_for('register_customer') }}">Register as Customer</a><br>
+<a href="{{ url_for('register_staff') }}">Register as Staff</a>
+
+<h3>Login</h3>
+<a href="{{ url_for('login') }}?role=customer">Customer Login</a><br>
+<a href="{{ url_for('login') }}?role=staff">Staff Login</a>
+
+
+
+</body>
+</html>

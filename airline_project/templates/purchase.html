@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head><title>Purchase Ticket</title></head>
+<body>
+    <h1>Purchase Ticket for Flight {{ flight['flight_number'] }}</h1>
+
+    <form method="POST">
+        Card Type:
+        <select name="card_type">
+            <option>Credit</option>
+            <option>Debit</option>
+        </select><br>
+
+        Card Number: <input name="card_number"><br>
+        Name on Card: <input name="name_on_card"><br>
+        Expiration Date: <input type="date" name="expiration_date"><br>
+
+        <button type="submit">Purchase</button>
+    </form>
+
+    {% if error %}<p style="color:red;">{{ error }}</p>{% endif %}
+</body>
+</html>
